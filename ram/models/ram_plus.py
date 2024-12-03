@@ -139,12 +139,12 @@ class RAM_plus(nn.Module):
         self.delete_tag_index = delete_tag_index
 
         # load tag list
-        self.tag_list = self.load_tag_list(tag_list)
+        self.tag_list = [] #self.load_tag_list(tag_list)
         self.tag_list_chinese = self.load_tag_list(tag_list_chinese)
 
         # create image-tag recognition decoder
         self.threshold = threshold
-        self.num_class = len(self.tag_list)
+        self.num_class = len(self.tag_list_chinese)
         q2l_config = BertConfig.from_json_file(f'{CONFIG_PATH}/configs/q2l_config.json')
         q2l_config.encoder_width = 512
         self.tagging_head = BertModel(config=q2l_config,
@@ -330,8 +330,8 @@ class RAM_plus(nn.Module):
         tag_output_chinese = []
         for b in range(bs):
             index = np.argwhere(tag[b] == 1)
-            token = self.tag_list[index].squeeze(axis=1)
-            tag_output.append(' | '.join(token))
+            # token = self.tag_list[index].squeeze(axis=1)
+            # tag_output.append(' | '.join(token))
             token_chinese = self.tag_list_chinese[index].squeeze(axis=1)
             tag_output_chinese.append(' | '.join(token_chinese))
 
@@ -392,7 +392,7 @@ class RAM_plus(nn.Module):
         tag_output = []
         for b in range(bs):
             index = np.argwhere(tag[b] == 1)
-            token = self.tag_list[index].squeeze(axis=1)
+            token = self.tag_list_chinese[index].squeeze(axis=1)
             tag_output.append(' | '.join(token))
 
         return tag_output

@@ -5,6 +5,7 @@
 import argparse
 import numpy as np
 import random
+import time
 
 import torch
 
@@ -47,8 +48,15 @@ if __name__ == "__main__":
 
     model = model.to(device)
 
+    start = time.time()
     image = transform(Image.open(args.image)).unsqueeze(0).to(device)
-
     res = inference(image, model)
+    mid = time.time()
+    print('图片1耗时: ', float(mid-start))
     print("Image Tags: ", res[0])
     print("图像标签: ", res[1])
+    image2 = transform(Image.open('/mnt/chy/test/4.jpg')).unsqueeze(0).to(device)
+    res2 = inference(image2, model)
+    print('图片2耗时: ', float(time.time()-mid))
+    print("Image Tags: ", res2[0])
+    print("图像标签: ", res2[1])
