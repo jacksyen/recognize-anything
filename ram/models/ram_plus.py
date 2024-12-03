@@ -326,7 +326,7 @@ class RAM_plus(nn.Module):
 
         tag = targets.cpu().numpy()
         tag[:,self.delete_tag_index] = 0
-        tag_output = []
+        tag_output = [""]
         tag_output_chinese = []
         for b in range(bs):
             index = np.argwhere(tag[b] == 1)
